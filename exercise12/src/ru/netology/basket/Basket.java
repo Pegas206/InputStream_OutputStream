@@ -3,7 +3,7 @@ package ru.netology.basket;
 import java.io.*;
 import java.util.Scanner;
 
-public class Basket {
+public class Basket implements Serializable {
     private static String[] products;
     private static int[] prices;
     private static int[] counts;
@@ -12,9 +12,11 @@ public class Basket {
     private static int[] userBasket = new int[5];
     // переменная итого
     private static int total = 0;
-private Basket(){
 
-}
+    private Basket() {
+
+    }
+
     public Basket(String[] products, int[] prices) {
         this.products = products;
         this.prices = prices;
@@ -87,40 +89,54 @@ private Basket(){
         return products;
     }
 
+
     public int[] getPrice() {
         return prices;
     }
+
     public void saveTxt(File textFile) throws FileNotFoundException {
-       try (PrintWriter out = new PrintWriter(textFile);){
-           out.println(userBasket.length);
-           for (int i = 0; i < userBasket.length; i++) {
-               if ((userBasket[i]) > 0) {
+        try (PrintWriter out = new PrintWriter(textFile);) {
+            out.println(userBasket.length);
+            for (int i = 0; i < userBasket.length; i++) {
+                if ((userBasket[i]) > 0) {
 
-                   out.println(products[i]);
-                   out.println(userBasket[i]);
-                   out.println(prices[i]);
-               }
-           }
-       }
-}
+                    out.println(products[i]);
+                    out.println(userBasket[i]);
+                    out.println(prices[i]);
+                }
+            }
+        }
+    }
+
     public static Basket loadFromTxtFile(File textFile) throws IOException {
-       try (Scanner scanner = new Scanner(textFile)) {
-           Basket basket = new Basket();
-           int size = Integer.parseInt(scanner.nextLine());
-           basket.products = new String[size];
-           basket.prices = new int[size];
-           basket.counts = new int[size];
+        try (Scanner scanner = new Scanner(textFile)) {
+            Basket basket = new Basket();
+            int size = Integer.parseInt(scanner.nextLine());
+            basket.products = new String[size];
+            basket.prices = new int[size];
+            basket.counts = new int[size];
 
-           for (int i = 0; i < size; i++) {
-               if ((userBasket[i]) > 0) {
-                   basket.products[i] = scanner.nextLine();
-                   basket.counts[i] = Integer.parseInt(scanner.nextLine());
-                   basket.prices[i] = Integer.parseInt(scanner.nextLine());
-               }
+            for (int i = 0; i < size; i++) {
+                if ((userBasket[i]) > 0) {
+                    basket.products[i] = scanner.nextLine();
+                    basket.counts[i] = Integer.parseInt(scanner.nextLine());
+                    basket.prices[i] = Integer.parseInt(scanner.nextLine());
+                }
 
-           }
-           return basket;
+            }
+            return basket;
+        }
+    }
+
+    public void saveBin(File textFile) throws IOException {
+       try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(textFile))){
+           out.writeObject(this);
        }
- }
+    }
 
+    public static Basket loadFromBin(File textFile) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(textFile))){
+         return (Basket) in.readObject();
+        }
+    }
 }
