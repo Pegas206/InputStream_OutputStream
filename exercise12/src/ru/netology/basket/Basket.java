@@ -4,14 +4,14 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Basket {
-    private static String[] products;
-    private static int[] prices;
-    private static int[] counts;
+    private  String[] products;
+    private int[] prices;
+    private  int[] counts;
 
     // массив пользовательской корзины
-    private static int[] userBasket = new int[5];
+    private int[] userBasket = new int[5];
     // переменная итого
-    private static int total = 0;
+    private int total = 0;
 private Basket(){
 
 }
@@ -21,7 +21,7 @@ private Basket(){
         this.counts = new int[products.length];
     }
 
-    public static void groceryBasket() {
+    public void groceryBasket() {
 
         int productNumber = 0;
         int productCount = 0;
@@ -66,11 +66,11 @@ private Basket(){
         }
     }
 
-    public static void addToCart(int productNumber, int productCount) {
+    public void addToCart(int productNumber, int productCount) {
         userBasket[productNumber] += productCount;
     }
 
-    public static void printCart() {
+    public void printCart() {
         System.out.println("Ваша корзина");
         for (int i = 0; i < userBasket.length; i++) {
             if ((userBasket[i]) > 0) {
@@ -83,7 +83,7 @@ private Basket(){
         System.out.println("Итого: " + total + "руб.");
     }
 
-    public static String[] getProducts() {
+    public String[] getProducts() {
         return products;
     }
 
@@ -112,7 +112,7 @@ private Basket(){
            basket.counts = new int[size];
 
            for (int i = 0; i < size; i++) {
-               if ((userBasket[i]) > 0) {
+               if ((basket.userBasket[i]) > 0) {
                    basket.products[i] = scanner.nextLine();
                    basket.counts[i] = Integer.parseInt(scanner.nextLine());
                    basket.prices[i] = Integer.parseInt(scanner.nextLine());
