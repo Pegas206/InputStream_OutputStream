@@ -20,7 +20,7 @@ public class Main {
         }
         else {
             System.out.println("Файл с сохраненной корзиной отсутствует, необходимо создать новую");
-            Basket.groceryBasket();
+            basket.groceryBasket();
 
             basket.saveBin(new File("basket.bin"));
         }
