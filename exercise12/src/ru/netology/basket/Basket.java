@@ -42,18 +42,20 @@ private Basket(){
                 break;
             }
             try {
-                //перевод полученых данных из строки в цифры и заполнение параметров корзины
+                //перевод полученных данных из строки в цифры и заполнение параметров корзины
                 String[] parts = shop.split(" ");
                 if (parts.length != 2) {
                     System.out.println("Введены не корректные данные, необходимо вводить номер продукта и кол-во");
                 }
                 productNumber = Integer.parseInt(parts[0]);
                 productCount = (Integer.parseInt(parts[1]));
+
                 if (productCount > 50) {
                     System.out.println("Введено не корректное количество, тут Вам не оптовая база!)");
                 } else if (productCount < 0) {
                     System.out.println("Введено не корректное количество, кол-во не может быть отрицательным!)");
                 }
+                ClientLog.log(productNumber, productCount);
                 addToCart(productNumber, productCount);
             } catch (NumberFormatException s) {
             } catch (ArrayIndexOutOfBoundsException s) {
