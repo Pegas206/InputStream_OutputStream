@@ -1,20 +1,25 @@
 package ru.netology.basket;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.util.Scanner;
 
+
 public class Basket {
-    private  String[] products;
+    private String[] products;
     private int[] prices;
-    private  int[] counts;
+    private int[] counts;
 
     // массив пользовательской корзины
     private int[] userBasket = new int[5];
     // переменная итого
     private int total = 0;
-private Basket(){
 
-}
+    private Basket() {
+
+    }
+
     public Basket(String[] products, int[] prices) {
         this.products = products;
         this.prices = prices;
@@ -22,7 +27,7 @@ private Basket(){
     }
 
     public void groceryBasket() {
-
+        ClientLog clientLog = new ClientLog();
         int productNumber = 0;
         int productCount = 0;
         Scanner toolBox = new Scanner(System.in);
@@ -49,13 +54,12 @@ private Basket(){
                 }
                 productNumber = Integer.parseInt(parts[0]);
                 productCount = (Integer.parseInt(parts[1]));
-
+                clientLog.log(productNumber, productCount);
                 if (productCount > 50) {
                     System.out.println("Введено не корректное количество, тут Вам не оптовая база!)");
                 } else if (productCount < 0) {
                     System.out.println("Введено не корректное количество, кол-во не может быть отрицательным!)");
                 }
-                ClientLog.log(productNumber, productCount);
                 addToCart(productNumber, productCount);
             } catch (NumberFormatException s) {
             } catch (ArrayIndexOutOfBoundsException s) {
@@ -85,44 +89,23 @@ private Basket(){
         System.out.println("Итого: " + total + "руб.");
     }
 
-    public String[] getProducts() {
-        return products;
+
+    public void saveJson(File textFile) throws IOException {
+        try (PrintWriter out = new PrintWriter(textFile)) {
+            Gson gson = new Gson();
+            String json = gson.toJson(this);
+            out.println(json);
+        }
     }
 
-    public int[] getPrice() {
-        return prices;
+    public static Basket loadFromJson(File textFile) throws IOException {
+        try (Scanner scanner = new Scanner(textFile)) {
+            Gson gson = new Gson();
+            String json = scanner.nextLine();
+            Basket basket = gson.fromJson(json, Basket.class);
+            return basket;
+        }
+
     }
-    public void saveTxt(File textFile) throws FileNotFoundException {
-       try (PrintWriter out = new PrintWriter(textFile);){
-           out.println(userBasket.length);
-           for (int i = 0; i < userBasket.length; i++) {
-               if ((userBasket[i]) > 0) {
-
-                   out.println(products[i]);
-                   out.println(userBasket[i]);
-                   out.println(prices[i]);
-               }
-           }
-       }
-}
-    public static Basket loadFromTxtFile(File textFile) throws IOException {
-       try (Scanner scanner = new Scanner(textFile)) {
-           Basket basket = new Basket();
-           int size = Integer.parseInt(scanner.nextLine());
-           basket.products = new String[size];
-           basket.prices = new int[size];
-           basket.counts = new int[size];
-
-           for (int i = 0; i < size; i++) {
-               if ((basket.userBasket[i]) > 0) {
-                   basket.products[i] = scanner.nextLine();
-                   basket.counts[i] = Integer.parseInt(scanner.nextLine());
-                   basket.prices[i] = Integer.parseInt(scanner.nextLine());
-               }
-
-           }
-           return basket;
-       }
- }
 
 }
