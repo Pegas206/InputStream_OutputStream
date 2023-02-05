@@ -90,12 +90,13 @@ public class Basket {
     }
 
 
-    public void saveJson(File textFile) throws IOException {
+    public Basket saveJson(File textFile) throws IOException {
         try (PrintWriter out = new PrintWriter(textFile)) {
             Gson gson = new Gson();
             String json = gson.toJson(this);
             out.println(json);
         }
+        return null;
     }
 
     public static Basket loadFromJson(File textFile) throws IOException {
